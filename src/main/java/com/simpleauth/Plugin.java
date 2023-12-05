@@ -6,13 +6,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 /*
  * simpleauthme java plugin
  */
-public class Plugin extends JavaPlugin
-{
-  private static final Logger LOGGER=Logger.getLogger("simpleauthme");
-
+public class Plugin extends JavaPlugin{
+  public static Logger LOGGER=Logger.getLogger("simpleauthme");
+  private CommandHanlder commandHanlder;
   public void onEnable()
   {
     LOGGER.info("simpleauthme enabled");
+    commandHanlder = new CommandHanlder();
+    getCommand("register").setExecutor(commandHanlder);
   }
 
   public void onDisable()

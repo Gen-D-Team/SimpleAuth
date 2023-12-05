@@ -1,4 +1,11 @@
 name: simpleauthme
-main: com.simpleauth.simpleauthme.Plugin
+main: com.simpleauth.Plugin
 version: 0.1
 api-version: 1.15
+author: ["KiroHoang"]
+description: Init Account in server
+commands:
+  register:
+    description: Create a new account with a password
+    usage: /<command> <password>
+    aliases: [r]
