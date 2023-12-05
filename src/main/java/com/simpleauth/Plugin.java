@@ -14,6 +14,7 @@ public class Plugin extends JavaPlugin{
     LOGGER.info("simpleauthme enabled");
     commandHanlder = new CommandHanlder();
     getCommand("register").setExecutor(commandHanlder);
+    getCommand("addemail").setExecutor(commandHanlder);
   }
 
   public void onDisable()

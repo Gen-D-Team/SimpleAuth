@@ -5,7 +5,13 @@ api-version: 1.15
 author: ["KiroHoang"]
 description: Init Account in server
 commands:
+  # register account
   register:
     description: Create a new account with a password
     usage: /<command> <password>
     aliases: [r]
+  
+  addemail:
+    description: Add an email address to restore account if user has been stolen
+    usage: /<command> <email> <password>
+    
