@@ -1,4 +1,4 @@
-package com;
+package com.simpleauth;
 
 import static org.junit.Assert.assertTrue;
 

@@ -1,4 +1,4 @@
-name: simpleauth
-main: com.simpleauth.Plugin
+name: simpleauthme
+main: com.simpleauth.simpleauthme.Plugin
 version: 0.1
 api-version: 1.15
