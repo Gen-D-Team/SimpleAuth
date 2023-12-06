@@ -16,6 +16,7 @@ public class Plugin extends JavaPlugin{
     getCommand("register").setExecutor(commandHanlder);
     getCommand("login").setExecutor(commandHanlder);
     getServer().getPluginManager().registerEvents(commandHanlder, this);
+    getCommand("addemail").setExecutor(commandHanlder);
   }
 
   public void onDisable()
