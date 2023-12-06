@@ -16,5 +16,5 @@ commands:
     aliases: [l]
   addemail:
     description: Add an email address
-    usage: /<command> <email>
+    usage: /addemail <email>
     
