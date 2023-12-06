@@ -10,8 +10,4 @@ commands:
     description: Create a new account with a password
     usage: /<command> <password>
     aliases: [r]
-  
-  addemail:
-    description: Add an email address to restore account if user has been stolen
-    usage: /<command> <email>
     
