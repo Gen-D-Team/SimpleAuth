@@ -12,6 +12,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.simpleauth.Plugin;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -93,6 +96,24 @@ public class LogIn implements CommandExecutor, Listener {
             event.setCancelled(true);
             LoginTimestamps.put(playerName, System.currentTimeMillis());
             player.sendMessage("§cYou must login before move");
+        }
+    }
+
+    private void saveDataToFile() {
+        File dataFile = new File("D:/Dev4future/MinecraftPluginWorkSpace/SimpleAuth/src/main/java/com/simpleauth/data/database/players.player");
+        try (FileWriter writer = new FileWriter(dataFile)) {
+            for (Map.Entry<String, String> entry : playerData.entrySet()) {
+                writer.write(entry.getKey() + ":" + entry.getValue() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadDataFromFile() {
+        File dataFile = new File("D:/Dev4future/MinecraftPluginWorkSpace/SimpleAuth/src/main/java/com/simpleauth/data/database/players.player");
+        if (dataFile.exists()){
+            
         }
     }
 }
