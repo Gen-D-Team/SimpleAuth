@@ -7,9 +7,9 @@ description: Init Account in server
 commands:
   register:
     description: register account
-    usage: /<command> <password>
+    usage: /register <password>
     aliases: [r]
   login:
     desription: login account
-    usage: /<command> <password>
+    usage: /login <password>
     aliases: [l]
