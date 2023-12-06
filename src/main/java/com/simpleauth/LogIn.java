@@ -26,8 +26,7 @@ public class LogIn implements CommandExecutor, Listener {
         if (command.getName().equalsIgnoreCase("register")) {
             HandleRegister(player, playerName, password);
             return true;
-        }
-        else if (command.getName().equalsIgnoreCase("login")) {
+        } else if (command.getName().equalsIgnoreCase("login")) {
             HandleLogin(player, playerName, password);
             return true;
         }
@@ -63,7 +62,7 @@ public class LogIn implements CommandExecutor, Listener {
 
         if (!loggedInPlayers.contains(playerName)) {
             event.setCancelled(true);
-            player.sendMessage("§fYou must login before move");
+            player.sendMessage("§cYou must login before move");
         }
     }
 }
