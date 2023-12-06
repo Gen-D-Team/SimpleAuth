@@ -9,12 +9,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Plugin extends JavaPlugin{
   public static Logger LOGGER=Logger.getLogger("simpleauthme");
   private CommandHanlder commandHanlder;
+  private Email email;
   public void onEnable()
   {
     LOGGER.info("simpleauthme enabled");
     commandHanlder = new CommandHanlder();
+    email = new Email();
     getCommand("register").setExecutor(commandHanlder);
-    getCommand("addemail").setExecutor(commandHanlder);
+    getCommand("addemail").setExecutor(email);
   }
 
   public void onDisable()

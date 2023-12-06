@@ -10,4 +10,8 @@ commands:
     description: Create a new account with a password
     usage: /<command> <password>
     aliases: [r]
+
+  addemail:
+    description: Add an email address
+    usage: /<command> <email>
     
