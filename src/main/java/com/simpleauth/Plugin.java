@@ -17,8 +17,9 @@ public class Plugin extends JavaPlugin{
     commandHanlder = new LogIn();
     getCommand("register").setExecutor(commandHanlder);
     getCommand("login").setExecutor(commandHanlder);
-    getServer().getPluginManager().registerEvents(commandHanlder, this);
     getCommand("addemail").setExecutor(commandHanlder);
+    getServer().getPluginManager().registerEvents(commandHanlder, this);
+    getLogger().info("SimpleAuth-0.1 Enabled");
   }
 
   public void onDisable()

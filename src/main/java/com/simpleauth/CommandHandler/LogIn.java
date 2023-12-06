@@ -1,5 +1,6 @@
 package com.simpleauth.CommandHandler;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -7,15 +8,41 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.simpleauth.Plugin;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.function.Predicate;
 
 public class LogIn implements CommandExecutor, Listener {
     private HashMap<String, String> playerData = new HashMap<>();
     private HashSet<String> loggedInPlayers = new HashSet<>();
+    private HashMap<String, Long> LoginTimestamps = new HashMap<>();
+
+    public LogIn(){
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                final long currentTime = System.currentTimeMillis();
+                LoginTimestamps.entrySet().removeIf(new Predicate<Map.Entry<String, Long>>(){
+                    @Override
+                    public boolean test(Map.Entry<String, Long> entry) {
+                        if (currentTime - entry.getValue() > 60000) {
+                            Player player = Bukkit.getPlayer(entry.getKey());
+                            if (player != null) {
+                                player.kickPlayer("Your time is out");
+                            }
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+            }
+        }.runTaskTimer((Plugin) Bukkit.getPluginManager().getPlugin("simpleauthme"), 0L, 20L);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -41,7 +68,7 @@ public class LogIn implements CommandExecutor, Listener {
         } else {
             playerData.put(playerName, password);
             player.sendMessage("§aRegistering, just a few seconds..");
-            Plugin.LOGGER.info(playerName + "Registered");
+            Plugin.LOGGER.info(playerName + " Registered");
         }
     }
 
@@ -52,8 +79,9 @@ public class LogIn implements CommandExecutor, Listener {
             player.sendMessage("§4Incorrect Password");
         } else {
             loggedInPlayers.add(playerName);
+            LoginTimestamps.remove(playerName);
             player.sendMessage("§aLogin Successfully");
-            Plugin.LOGGER.info(playerName + "logged in");
+            Plugin.LOGGER.info(playerName + " logged in");
         }
     }
 
@@ -61,9 +89,9 @@ public class LogIn implements CommandExecutor, Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         String playerName = player.getName();
-
         if (!loggedInPlayers.contains(playerName)) {
             event.setCancelled(true);
+            LoginTimestamps.put(playerName, System.currentTimeMillis());
             player.sendMessage("§cYou must login before move");
         }
     }
