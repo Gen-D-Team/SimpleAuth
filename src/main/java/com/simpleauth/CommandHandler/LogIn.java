@@ -1,4 +1,4 @@
-package com.simpleauth;
+package com.simpleauth.CommandHandler;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+
+import com.simpleauth.Plugin;
 
 import java.util.HashMap;
 import java.util.HashSet;

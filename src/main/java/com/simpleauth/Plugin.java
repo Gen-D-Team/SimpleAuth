@@ -3,6 +3,8 @@ package com.simpleauth;
 import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.simpleauth.CommandHandler.LogIn;
+
 /*
  * simpleauthme java plugin
  */

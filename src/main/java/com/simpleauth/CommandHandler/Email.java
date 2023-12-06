@@ -1,8 +1,10 @@
-package com.simpleauth;
+package com.simpleauth.CommandHandler;
 
 import java.util.regex.*;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+
+import com.simpleauth.Plugin;
 
 public class Email implements CommandExecutor {
 
