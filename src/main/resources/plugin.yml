@@ -10,8 +10,16 @@ commands:
     description: register account
     usage: /register <password>
     aliases: [r]
+<<<<<<< HEAD
   login:
     desription: login account
     usage: /login <password>
     aliases: [l]
     
+=======
+
+  addemail:
+    description: Add an email address
+    usage: /<command> <email>
+    
+>>>>>>> DinoNguyen
