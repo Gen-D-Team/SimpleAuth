@@ -6,6 +6,10 @@ author: ["KiroHoang"]
 description: Init Account in server
 commands:
   register:
-    description: Create a new account with a password
+    description: register account
     usage: /<command> <password>
     aliases: [r]
+  login:
+    desription: login account
+    usage: /<command> <password>
+    aliases: [l]
