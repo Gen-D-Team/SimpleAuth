@@ -78,7 +78,7 @@ public class LogIn implements CommandExecutor, Listener {
             Plugin.LOGGER.info(playerName + " Registered");
         }
     }
-
+    // làm thêm phần kiểm tra xem người dùng đã đăng kí hay chưa dựa vào players.json
     public void HandleLogin(Player player, String playerName, String password) {
         if (!playerData.containsKey(playerName)) {
             player.sendMessage("§cYou need to register before login");
@@ -104,7 +104,7 @@ public class LogIn implements CommandExecutor, Listener {
     }
 
     private void saveDataToFile() {
-        File dataFolder = new File(Plugin.getInstance().getDataFolder(), "SimpleAuth");
+        File dataFolder = new File("plugins/SimpleAuthConfig/");
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
         }
