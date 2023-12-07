@@ -12,7 +12,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.simpleauth.Plugin;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,13 +26,14 @@ public class LogIn implements CommandExecutor, Listener {
     private HashMap<String, String> playerData = new HashMap<>();
     private HashSet<String> loggedInPlayers = new HashSet<>();
     private HashMap<String, Long> LoginTimestamps = new HashMap<>();
+    private final String dataFileName = "playes.json";
 
-    public LogIn(){
+    public LogIn() {
         new BukkitRunnable() {
             @Override
             public void run() {
                 final long currentTime = System.currentTimeMillis();
-                LoginTimestamps.entrySet().removeIf(new Predicate<Map.Entry<String, Long>>(){
+                LoginTimestamps.entrySet().removeIf(new Predicate<Map.Entry<String, Long>>() {
                     @Override
                     public boolean test(Map.Entry<String, Long> entry) {
                         if (currentTime - entry.getValue() > 60000) {
@@ -71,6 +74,7 @@ public class LogIn implements CommandExecutor, Listener {
         } else {
             playerData.put(playerName, password);
             player.sendMessage("§aRegistering, just a few seconds..");
+            saveDataToFile();
             Plugin.LOGGER.info(playerName + " Registered");
         }
     }
@@ -100,7 +104,13 @@ public class LogIn implements CommandExecutor, Listener {
     }
 
     private void saveDataToFile() {
-        File dataFile = new File("D:/Dev4future/MinecraftPluginWorkSpace/SimpleAuth/src/main/java/com/simpleauth/data/database/players.player");
+        File dataFolder = new File(Plugin.getInstance().getDataFolder(), "SimpleAuth");
+        if (!dataFolder.exists()) {
+            dataFolder.mkdirs();
+        }
+
+        File dataFile = new File(dataFolder, dataFileName);
+
         try (FileWriter writer = new FileWriter(dataFile)) {
             for (Map.Entry<String, String> entry : playerData.entrySet()) {
                 writer.write(entry.getKey() + ":" + entry.getValue() + "\n");
@@ -110,10 +120,25 @@ public class LogIn implements CommandExecutor, Listener {
         }
     }
 
-    private void loadDataFromFile() {
-        File dataFile = new File("D:/Dev4future/MinecraftPluginWorkSpace/SimpleAuth/src/main/java/com/simpleauth/data/database/players.player");
-        if (dataFile.exists()){
-            
+    public void loadDataFromFile() throws IOException {
+        File dataFile = new File("players.json");
+        if (!dataFile.exists() || !dataFile.isFile()) {
+            dataFile.createNewFile();
+
+        } else {
+            try (BufferedReader reader = new BufferedReader(new FileReader(dataFile))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(":");
+                    if (parts.length == 2) {
+                        String playerName = parts[0];
+                        String hashedPassword = parts[1];
+                        playerData.put(playerName, hashedPassword);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
