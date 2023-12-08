@@ -11,6 +11,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.simpleauth.Plugin;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,6 +31,10 @@ public class LogIn implements CommandExecutor, Listener {
     private HashSet<String> loggedInPlayers = new HashSet<>();
     private HashMap<String, Long> LoginTimestamps = new HashMap<>();
     private final String dataFileName = "playes.json";
+    private final File dataFile = new File("plugins/SimpleAuthConfig/", dataFileName);
+    private final Gson gson = new Gson();
+    private final JsonHandler jsonHandler = new JsonHandler();
+    
 
     public LogIn() {
         new BukkitRunnable() {
@@ -69,9 +77,10 @@ public class LogIn implements CommandExecutor, Listener {
     }
 
     public void HandleRegister(Player player, String playerName, String password) {
-        if (playerData.containsKey(playerName)) {
+        if (jsonHandler.playerExists(playerName)) {
             player.sendMessage("§aYou have been registered");
         } else {
+            jsonHandler.addPlayer(playerName, password);
             playerData.put(playerName, password);
             player.sendMessage("§aRegistering, just a few seconds..");
             saveDataToFile();
@@ -80,15 +89,17 @@ public class LogIn implements CommandExecutor, Listener {
     }
     // làm thêm phần kiểm tra xem người dùng đã đăng kí hay chưa dựa vào players.json
     public void HandleLogin(Player player, String playerName, String password) {
-        if (!playerData.containsKey(playerName)) {
-            player.sendMessage("§cYou need to register before login");
-        } else if (!playerData.get(playerName).equals(password)) {
-            player.sendMessage("§4Incorrect Password");
+        if(jsonHandler.playerExists(playerName)) {
+            if (loggedInPlayers.contains(playerName)) {
+                loggedInPlayers.add(playerName);
+                LoginTimestamps.remove(playerName);
+                player.sendMessage("§aLogin Successfully registered");
+                Plugin.LOGGER.info(playerName + " logged in");
+            } else {
+                player.sendMessage("§4Incorrect Password");
+            }
         } else {
-            loggedInPlayers.add(playerName);
-            LoginTimestamps.remove(playerName);
-            player.sendMessage("§aLogin Successfully");
-            Plugin.LOGGER.info(playerName + " logged in");
+            player.sendMessage("§cYou need to register before login");
         }
     }
 
@@ -120,7 +131,7 @@ public class LogIn implements CommandExecutor, Listener {
         }
     }
 
-    public void loadDataFromFile() throws IOException {
+    public boolean loadDataFromFile() throws IOException {
         File dataFile = new File("players.json");
         if (!dataFile.exists() || !dataFile.isFile()) {
             dataFile.createNewFile();
@@ -136,9 +147,12 @@ public class LogIn implements CommandExecutor, Listener {
                         playerData.put(playerName, hashedPassword);
                     }
                 }
+                return true;
             } catch (IOException e) {
                 e.printStackTrace();
+                return false;
             }
         }
+        return false;
     }
 }
