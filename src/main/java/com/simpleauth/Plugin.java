@@ -9,11 +9,11 @@ import com.simpleauth.CommandHandler.LogIn;
 /*
  * simpleauthme java plugin
  */
-public class Plugin extends JavaPlugin{
-  public static Logger LOGGER=Logger.getLogger("simpleauthme");
+public class Plugin extends JavaPlugin {
+  public static Logger LOGGER = Logger.getLogger("simpleauthme");
   private LogIn logIn;
-  public void onEnable()
-  {
+
+  public void onEnable() {
     LOGGER.info("simpleauthme enabled");
     logIn = new LogIn();
     getCommand("register").setExecutor(logIn);
@@ -28,8 +28,7 @@ public class Plugin extends JavaPlugin{
     }
   }
 
-  public void onDisable()
-  {
+  public void onDisable() {
     LOGGER.info("simpleauthme disabled");
   }
 

@@ -11,10 +11,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.simpleauth.Plugin;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,10 +27,6 @@ public class LogIn implements CommandExecutor, Listener {
     private HashSet<String> loggedInPlayers = new HashSet<>();
     private HashMap<String, Long> LoginTimestamps = new HashMap<>();
     private final String dataFileName = "playes.json";
-    private final File dataFile = new File("plugins/SimpleAuthConfig/", dataFileName);
-    private final Gson gson = new Gson();
-    private final JsonHandler jsonHandler = new JsonHandler();
-    
 
     public LogIn() {
         new BukkitRunnable() {
@@ -66,40 +58,46 @@ public class LogIn implements CommandExecutor, Listener {
         String playerName = player.getName();
         String password = args[0];
 
-        if (command.getName().equalsIgnoreCase("register")) {
-            HandleRegister(player, playerName, password);
-            return true;
-        } else if (command.getName().equalsIgnoreCase("login")) {
-            HandleLogin(player, playerName, password);
-            return true;
+        // Kiểm tra xem người chơi đã đăng kí hay chưa dựa vào file được lưu trữ trong
+        // file config
+        // nếu username người dùng dùng để tham gia vào server trùng với username được
+        // lưu trữ trong file
+        // thì sẽ chỉ cần login
+        if (loadDataFromFile() == true) {
+            if (command.getName().equalsIgnoreCase("login")) {
+                HandleLogin(player, playerName, password);
+                return true;
+            }
+        } else {
+            if (command.getName().equalsIgnoreCase("register")) {
+                HandleRegister(player, playerName, password);
+                return true;
+            }
         }
         return false;
     }
 
     public void HandleRegister(Player player, String playerName, String password) {
-        if (jsonHandler.playerExists(playerName)) {
+        if (playerData.containsKey(playerName)) {
             player.sendMessage("§aYou have been registered");
         } else {
-            jsonHandler.addPlayer(playerName, password);
             playerData.put(playerName, password);
             player.sendMessage("§aRegistering, just a few seconds..");
             saveDataToFile();
             Plugin.LOGGER.info(playerName + " Registered");
         }
     }
-    // làm thêm phần kiểm tra xem người dùng đã đăng kí hay chưa dựa vào players.json
+
     public void HandleLogin(Player player, String playerName, String password) {
-        if(jsonHandler.playerExists(playerName)) {
-            if (loggedInPlayers.contains(playerName)) {
-                loggedInPlayers.add(playerName);
-                LoginTimestamps.remove(playerName);
-                player.sendMessage("§aLogin Successfully registered");
-                Plugin.LOGGER.info(playerName + " logged in");
-            } else {
-                player.sendMessage("§4Incorrect Password");
-            }
-        } else {
+        if (!playerData.containsKey(playerName)) {
             player.sendMessage("§cYou need to register before login");
+        } else if (!playerData.get(playerName).equals(password)) {
+            player.sendMessage("§4Incorrect password");
+        } else {
+            loggedInPlayers.add(playerName);
+            LoginTimestamps.remove(playerName);
+            player.sendMessage("§aLogin Successful");
+            Plugin.LOGGER.info(playerName + " just logged into server");
         }
     }
 
