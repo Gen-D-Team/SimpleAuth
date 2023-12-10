@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.simpleauth.Plugin;
@@ -58,21 +59,15 @@ public class LogIn implements CommandExecutor, Listener {
         String playerName = player.getName();
         String password = args[0];
 
-        // Kiểm tra xem người chơi đã đăng kí hay chưa dựa vào file được lưu trữ trong
-        // file config
-        // nếu username người dùng dùng để tham gia vào server trùng với username được
-        // lưu trữ trong file
-        // thì sẽ chỉ cần login
-        if (loadDataFromFile() == true) {
-            if (command.getName().equalsIgnoreCase("login")) {
-                HandleLogin(player, playerName, password);
-                return true;
-            }
-        } else {
-            if (command.getName().equalsIgnoreCase("register")) {
-                HandleRegister(player, playerName, password);
-                return true;
-            }
+        // check if player have the same username in the file
+        if(command.getName().equalsIgnoreCase("register")) {
+            HandleRegister(player, playerName, password);
+            return true;
+        }
+        
+        if (command.getName().equalsIgnoreCase("login")) {
+            HandleLogin(player, playerName, password);
+            return true;
         }
         return false;
     }
@@ -110,6 +105,13 @@ public class LogIn implements CommandExecutor, Listener {
             LoginTimestamps.put(playerName, System.currentTimeMillis());
             player.sendMessage("§cYou must login before move");
         }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        String playerName = player.getName();
+        loggedInPlayers.remove(playerName);
     }
 
     private void saveDataToFile() {
