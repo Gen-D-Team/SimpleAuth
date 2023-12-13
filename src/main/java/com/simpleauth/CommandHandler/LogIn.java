@@ -59,7 +59,6 @@ public class LogIn implements CommandExecutor, Listener {
         String playerName = player.getName();
         String password = args[0];
 
-        // check if player have the same username in the file
         if(command.getName().equalsIgnoreCase("register")) {
             HandleRegister(player, playerName, password);
             return true;
@@ -131,6 +130,8 @@ public class LogIn implements CommandExecutor, Listener {
         }
     }
 
+    private String username;
+
     public boolean loadDataFromFile() throws IOException {
         File dataFile = new File("players.json");
         if (!dataFile.exists() || !dataFile.isFile()) {
@@ -141,10 +142,14 @@ public class LogIn implements CommandExecutor, Listener {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split(":");
+                    String playerName = parts[0];
+                    String hashedPassword = parts[1];
                     if (parts.length == 2) {
-                        String playerName = parts[0];
-                        String hashedPassword = parts[1];
                         playerData.put(playerName, hashedPassword);
+                    }
+
+                    if (username.equals(playerName)) {
+                        return true;
                     }
                 }
                 return true;
