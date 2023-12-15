@@ -8,11 +8,11 @@ commands:
   # register account
   register:
     description: register account
-    usage: /register <password>
+    usage: /register <username> <password>
     aliases: [r]
   login:
-    desription: login account
-    usage: /login <password>
+    description: login account
+    usage: /login <username> <password>
     aliases: [l]
   addemail:
     description: Add an email address

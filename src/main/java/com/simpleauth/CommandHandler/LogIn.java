@@ -59,25 +59,32 @@ public class LogIn implements CommandExecutor, Listener {
         String playerName = player.getName();
         String password = args[0];
 
-        if(command.getName().equalsIgnoreCase("register")) {
-            HandleRegister(player, playerName, password);
-            return true;
-        }
-        
-        if (command.getName().equalsIgnoreCase("login")) {
-            HandleLogin(player, playerName, password);
-            return true;
+        try {
+            boolean dataloaded = loadDataFromFile();
+            if (dataloaded == false) {
+                command.getName().equalsIgnoreCase("register");
+                HandleLogin(player, playerName, password);
+            }
+
+            if (dataloaded == true)
+                command.getName().equalsIgnoreCase("login");
+                HandleRegister(player, playerName, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
         return false;
     }
 
     public void HandleRegister(Player player, String playerName, String password) {
+        
         if (playerData.containsKey(playerName)) {
             player.sendMessage("§aYou have been registered");
         } else {
             playerData.put(playerName, password);
             player.sendMessage("§aRegistering, just a few seconds..");
             saveDataToFile();
+            player.sendMessage("§aRegister Successfully");
             Plugin.LOGGER.info(playerName + " Registered");
         }
     }
@@ -130,8 +137,6 @@ public class LogIn implements CommandExecutor, Listener {
         }
     }
 
-    private String username;
-
     public boolean loadDataFromFile() throws IOException {
         File dataFile = new File("players.json");
         if (!dataFile.exists() || !dataFile.isFile()) {
@@ -146,13 +151,10 @@ public class LogIn implements CommandExecutor, Listener {
                     String hashedPassword = parts[1];
                     if (parts.length == 2) {
                         playerData.put(playerName, hashedPassword);
-                    }
-
-                    if (username.equals(playerName)) {
                         return true;
                     }
                 }
-                return true;
+                return false;
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;
