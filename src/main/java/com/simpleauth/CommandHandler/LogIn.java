@@ -59,6 +59,12 @@ public class LogIn implements CommandExecutor, Listener {
         String playerName = player.getName();
         String password = args[0];
 
+        try {
+            loadDataFromFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         if (playerData.containsKey(playerName) || command.getName().equalsIgnoreCase("login")) {
             HandleLogin(player, playerName, password);
         } else {

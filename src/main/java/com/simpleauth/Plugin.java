@@ -16,14 +16,14 @@ public class Plugin extends JavaPlugin {
   public void onEnable() {
     LOGGER.info("simpleauthme enabled");
     logIn = new LogIn();
-    getCommand("register").setExecutor(logIn);
-    getCommand("login").setExecutor(logIn);
-    getCommand("addemail").setExecutor(logIn);
     try {
       logIn.loadDataFromFile();
     } catch (IOException e) {
       e.printStackTrace();
     }
+    getCommand("register").setExecutor(logIn);
+    getCommand("login").setExecutor(logIn);
+    getCommand("addemail").setExecutor(logIn);
     getServer().getPluginManager().registerEvents(logIn, this);
     getLogger().info("SimpleAuth-0.2-SNAPSHOT Enabled");
   }
