@@ -27,7 +27,7 @@ public class LogIn implements CommandExecutor, Listener {
     private HashMap<String, String> playerData = new HashMap<>();
     private HashSet<String> loggedInPlayers = new HashSet<>();
     private HashMap<String, Long> LoginTimestamps = new HashMap<>();
-    private final String dataFileName = "playes.txt";
+    private final String dataFileName = "players.txt";
 
     public LogIn() {
         new BukkitRunnable() {
