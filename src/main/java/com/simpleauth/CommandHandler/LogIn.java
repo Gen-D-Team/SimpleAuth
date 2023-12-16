@@ -27,7 +27,7 @@ public class LogIn implements CommandExecutor, Listener {
     private HashMap<String, String> playerData = new HashMap<>();
     private HashSet<String> loggedInPlayers = new HashSet<>();
     private HashMap<String, Long> LoginTimestamps = new HashMap<>();
-    private final String dataFileName = "playes.json";
+    private final String dataFileName = "playes.txt";
 
     public LogIn() {
         new BukkitRunnable() {
@@ -59,25 +59,17 @@ public class LogIn implements CommandExecutor, Listener {
         String playerName = player.getName();
         String password = args[0];
 
-        try {
-            boolean dataloaded = loadDataFromFile();
-            if (dataloaded == false) {
-                command.getName().equalsIgnoreCase("register");
-                HandleLogin(player, playerName, password);
-            }
-
-            if (dataloaded == true)
-                command.getName().equalsIgnoreCase("login");
+        if (playerData.containsKey(playerName) || command.getName().equalsIgnoreCase("login")) {
+            HandleLogin(player, playerName, password);
+        } else {
+            if (command.getName().equalsIgnoreCase("register"))
                 HandleRegister(player, playerName, password);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
         }
         return false;
     }
 
     public void HandleRegister(Player player, String playerName, String password) {
-        
+
         if (playerData.containsKey(playerName)) {
             player.sendMessage("§aYou have been registered");
         } else {
@@ -138,7 +130,7 @@ public class LogIn implements CommandExecutor, Listener {
     }
 
     public boolean loadDataFromFile() throws IOException {
-        File dataFile = new File("players.json");
+        File dataFile = new File("players.txt");
         if (!dataFile.exists() || !dataFile.isFile()) {
             dataFile.createNewFile();
 

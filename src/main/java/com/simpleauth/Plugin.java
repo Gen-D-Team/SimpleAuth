@@ -19,13 +19,13 @@ public class Plugin extends JavaPlugin {
     getCommand("register").setExecutor(logIn);
     getCommand("login").setExecutor(logIn);
     getCommand("addemail").setExecutor(logIn);
-    getServer().getPluginManager().registerEvents(logIn, this);
-    getLogger().info("SimpleAuth-0.1 Enabled");
     try {
       logIn.loadDataFromFile();
     } catch (IOException e) {
       e.printStackTrace();
     }
+    getServer().getPluginManager().registerEvents(logIn, this);
+    getLogger().info("SimpleAuth-0.2-SNAPSHOT Enabled");
   }
 
   public void onDisable() {
