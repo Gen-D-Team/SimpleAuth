@@ -30,6 +30,11 @@ public class Plugin extends JavaPlugin {
 
   public void onDisable() {
     LOGGER.info("simpleauthme disabled");
+    try {
+      logIn.saveDataToFile();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public static JavaPlugin getInstance() {

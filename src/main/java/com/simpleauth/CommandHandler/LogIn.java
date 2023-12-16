@@ -57,47 +57,42 @@ public class LogIn implements CommandExecutor, Listener {
             return false;
         Player player = (Player) sender;
         String playerName = player.getName();
-        String password = args[0];
+        
+        if (command.getName().equalsIgnoreCase("register")) {
+            String password = args[0];
 
-        try {
-            loadDataFromFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            if (playerData.containsKey(playerName)) {
+                player.sendMessage("§cYour account has been registered!");
+                return true;
+            }
 
-        if (playerData.containsKey(playerName) || command.getName().equalsIgnoreCase("login")) {
-            HandleLogin(player, playerName, password);
-        } else {
-            if (command.getName().equalsIgnoreCase("register"))
-                HandleRegister(player, playerName, password);
-        }
-        return false;
-    }
-
-    public void HandleRegister(Player player, String playerName, String password) {
-
-        if (playerData.containsKey(playerName)) {
-            player.sendMessage("§aYou have been registered");
-        } else {
             playerData.put(playerName, password);
-            player.sendMessage("§aRegistering, just a few seconds..");
-            saveDataToFile();
-            player.sendMessage("§aRegister Successfully");
-            Plugin.LOGGER.info(playerName + " Registered");
-        }
-    }
 
-    public void HandleLogin(Player player, String playerName, String password) {
-        if (!playerData.containsKey(playerName)) {
-            player.sendMessage("§cYou need to register before login");
-        } else if (!playerData.get(playerName).equals(password)) {
-            player.sendMessage("§4Incorrect password");
-        } else {
+            try {
+                saveDataToFile();
+                player.sendMessage("§cRegister Successfully");
+                Plugin.LOGGER.info(playerName + " is registered!");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (command.getName().equalsIgnoreCase("login")) {
+            String password = args[0];
+
+            if (!playerData.containsKey(playerName)) {
+                player.sendMessage("§cYou need to register before login");
+                return true;
+            }
+
+            if (!playerData.get(playerName).equals(password)) {
+                player.sendMessage("§4Incorrect password");
+                return true;
+            }
+
             loggedInPlayers.add(playerName);
             LoginTimestamps.remove(playerName);
             player.sendMessage("§aLogin Successful");
-            Plugin.LOGGER.info(playerName + " just logged into server");
         }
+        return false;
     }
 
     @EventHandler
@@ -118,7 +113,7 @@ public class LogIn implements CommandExecutor, Listener {
         loggedInPlayers.remove(playerName);
     }
 
-    private void saveDataToFile() {
+    public void saveDataToFile() throws IOException {
         File dataFolder = new File("plugins/SimpleAuthConfig/");
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
@@ -126,38 +121,31 @@ public class LogIn implements CommandExecutor, Listener {
 
         File dataFile = new File(dataFolder, dataFileName);
 
-        try (FileWriter writer = new FileWriter(dataFile)) {
-            for (Map.Entry<String, String> entry : playerData.entrySet()) {
-                writer.write(entry.getKey() + ":" + entry.getValue() + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        FileWriter writer = new FileWriter(dataFile);
+        for (String playerName : playerData.keySet()) {
+            writer.write(playerName + ":" + playerData.get(playerName) + "\n");
         }
+        writer.close();
     }
 
-    public boolean loadDataFromFile() throws IOException {
-        File dataFile = new File("players.txt");
+    public void loadDataFromFile() throws IOException {
+        File dataFolder = new File("plugins/SimpleAuthConfig/");
+        File dataFile = new File(dataFolder, dataFileName);
         if (!dataFile.exists() || !dataFile.isFile()) {
             dataFile.createNewFile();
 
         } else {
-            try (BufferedReader reader = new BufferedReader(new FileReader(dataFile))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split(":");
-                    String playerName = parts[0];
-                    String hashedPassword = parts[1];
-                    if (parts.length == 2) {
-                        playerData.put(playerName, hashedPassword);
-                        return true;
-                    }
+            BufferedReader reader = new BufferedReader(new FileReader(dataFile));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":");
+                String playerName = parts[0];
+                String hashedPassword = parts[1];
+                if (parts.length == 2) {
+                    playerData.put(playerName, hashedPassword);
                 }
-                return false;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
             }
+            reader.close();
         }
-        return false;
     }
 }
