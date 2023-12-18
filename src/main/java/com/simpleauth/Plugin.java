@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.simpleauth.CommandHandler.Help;
 import com.simpleauth.CommandHandler.LogIn;
 
 /*
@@ -12,15 +13,18 @@ import com.simpleauth.CommandHandler.LogIn;
 public class Plugin extends JavaPlugin {
   public static Logger LOGGER = Logger.getLogger("simpleauthme");
   private LogIn logIn;
+  private Help help;
 
   public void onEnable() {
     LOGGER.info("simpleauthme enabled");
     logIn = new LogIn();
+    help = new Help();
     try {
       logIn.loadDataFromFile();
     } catch (IOException e) {
       e.printStackTrace();
     }
+    getCommand("help authme").setExecutor(help);
     getCommand("register").setExecutor(logIn);
     getCommand("login").setExecutor(logIn);
     getCommand("addemail").setExecutor(logIn);
@@ -30,11 +34,6 @@ public class Plugin extends JavaPlugin {
 
   public void onDisable() {
     LOGGER.info("simpleauthme disabled");
-    try {
-      logIn.saveDataToFile();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 
   public static JavaPlugin getInstance() {
