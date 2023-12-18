@@ -16,6 +16,7 @@ public class Plugin extends JavaPlugin {
   private Help help;
 
   public void onEnable() {
+    
     LOGGER.info("simpleauthme enabled");
     logIn = new LogIn();
     help = new Help();
@@ -24,10 +25,12 @@ public class Plugin extends JavaPlugin {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    getCommand("help authme").setExecutor(help);
+
+    getCommand("authme").setExecutor(help);
     getCommand("register").setExecutor(logIn);
     getCommand("login").setExecutor(logIn);
     getCommand("addemail").setExecutor(logIn);
+
     getServer().getPluginManager().registerEvents(logIn, this);
     getLogger().info("SimpleAuth-0.2-SNAPSHOT Enabled");
   }

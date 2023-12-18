@@ -6,6 +6,9 @@ author: ["KiroHoang"]
 description: Init Account in server
 commands:
   # register account
+  authme:
+    description: show available commands
+    usage: /authme
   register:
     description: register account
     usage: /register <password>

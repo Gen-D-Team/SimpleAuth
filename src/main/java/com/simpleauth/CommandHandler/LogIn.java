@@ -62,7 +62,7 @@ public class LogIn implements CommandExecutor, Listener {
             String password = args[0];
 
             if (playerData.containsKey(playerName)) {
-                player.sendMessage("§cYour account has been registered!");
+                player.sendMessage("§aYour account has been registered!");
                 return true;
             }
 
@@ -70,7 +70,7 @@ public class LogIn implements CommandExecutor, Listener {
 
             try {
                 saveDataToFile();
-                player.sendMessage("§cRegister Successfully");
+                player.sendMessage("§aRegister Successfully");
                 Plugin.LOGGER.info(playerName + " is registered!");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -90,7 +90,7 @@ public class LogIn implements CommandExecutor, Listener {
 
             loggedInPlayers.add(playerName);
             LoginTimestamps.remove(playerName);
-            player.sendMessage("§aLogin Successful");
+            player.sendMessage("§aLogin Successfully");
         }
         return false;
     }
