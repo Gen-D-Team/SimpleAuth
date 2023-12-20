@@ -25,8 +25,6 @@ public class Plugin extends JavaPlugin {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
-    getCommand("reload").setExecutor(logIn);
     getCommand("authme").setExecutor(help);
     getCommand("register").setExecutor(logIn);
     getCommand("login").setExecutor(logIn);

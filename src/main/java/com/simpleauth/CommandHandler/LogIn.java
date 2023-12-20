@@ -1,7 +1,6 @@
 package com.simpleauth.CommandHandler;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -59,10 +58,7 @@ public class LogIn implements CommandExecutor, Listener {
         Player player = (Player) sender;
         String playerName = player.getName();
 
-        if(command.getName().equalsIgnoreCase("reload")) {
-            Plugin.getInstance().reloadConfig();
-            player.sendMessage(ChatColor.GREEN + "AuthMe Reloaded");
-        }
+        // Register Command
         
         if (command.getName().equalsIgnoreCase("register")) {
             String password = args[0];
@@ -81,6 +77,8 @@ public class LogIn implements CommandExecutor, Listener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+        // Login Commands
         } else if (command.getName().equalsIgnoreCase("login")) {
             String password = args[0];
 
@@ -99,6 +97,10 @@ public class LogIn implements CommandExecutor, Listener {
             player.sendMessage("§aLogin Successfully");
         }
         return false;
+    }
+
+    public void registerCommand() {
+        
     }
 
     @EventHandler
