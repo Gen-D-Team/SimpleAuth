@@ -16,7 +16,7 @@ public class Plugin extends JavaPlugin {
   private Help help;
 
   public void onEnable() {
-    
+
     LOGGER.info("simpleauthme enabled");
     logIn = new LogIn();
     help = new Help();
@@ -26,6 +26,7 @@ public class Plugin extends JavaPlugin {
       e.printStackTrace();
     }
 
+    getCommand("reload").setExecutor(logIn);
     getCommand("authme").setExecutor(help);
     getCommand("register").setExecutor(logIn);
     getCommand("login").setExecutor(logIn);

@@ -1,10 +1,13 @@
 name: simpleauthme
 main: com.simpleauth.Plugin
 version: 0.2
-api-version: 1.15
+api-version: 1.16
 author: ["KiroHoang"]
 description: Init Account in server
 commands:
+  reload:
+    description: reload plugin
+    usage: /authme reload
   authme:
     description: show available commands
     usage: /authme

@@ -12,6 +12,7 @@ public class Help implements CommandExecutor ,Listener{
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String arg2, String[] arg3) {
+        // Check if object is a player or not
         if(!(sender instanceof Player)) {
             return false;
         }
