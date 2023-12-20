@@ -10,13 +10,12 @@ commands:
     usage: /authme
   register:
     description: register account
-    usage: /register <password>
+    # usage: /register <password>
     aliases: [r]
   login:
     description: login account
-    usage: /login <password>
+    # usage: /login <password>
     aliases: [l]
   addemail:
     description: Add an email address
     usage: /addemail <email>
-    
