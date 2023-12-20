@@ -22,6 +22,8 @@ public class Help implements CommandExecutor ,Listener{
             player.sendMessage(ChatColor.GOLD + "/authme to show available commands");
             player.sendMessage(ChatColor.GOLD + "/register <password> to register");
             player.sendMessage(ChatColor.GOLD + "/login <password> to login");
+            player.sendMessage(ChatColor.GOLD + "/addemail <email> to add email improve secure");
+            player.sendMessage(ChatColor.GOLD + "/fa <fa code> i don't know what to do with this ??");
             return true;
         }
         return false;
