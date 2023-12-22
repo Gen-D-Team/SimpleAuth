@@ -5,17 +5,13 @@ api-version: 1.16
 author: ["KiroHoang"]
 description: Init Account in server
 commands:
-  authme:
+  authme: # usage: /authme
     description: show available commands
-    usage: /authme
-  register:
+  register: # usage: /register <password>
     description: register account
-    # usage: /register <password>
     aliases: [r]
-  login:
+  login: # usage: /login <password>
     description: login account
-    # usage: /login <password>
     aliases: [l]
-  addemail:
+  addemail: # usage: /addemail <email>
     description: Add an email address
-    usage: /addemail <email>
