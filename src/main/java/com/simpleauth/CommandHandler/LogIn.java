@@ -99,10 +99,6 @@ public class LogIn implements CommandExecutor, Listener {
         return false;
     }
 
-    public void registerCommand() {
-        
-    }
-
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
