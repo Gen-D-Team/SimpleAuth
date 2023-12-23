@@ -14,7 +14,7 @@ import com.simpleauth.Plugin;
 
 public class Email implements CommandExecutor {
     private HashMap<String, String> playerData = new HashMap<>();
-    private final String dataFileName = "gmail.txt";
+    private final String dataFileName = "email.txt";
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
@@ -30,15 +30,16 @@ public class Email implements CommandExecutor {
 
             if (matcherFound) {
                 try {
-                    loadData();
-                    if (!playerData.containsKey(playerName)) {
+                    if (playerData.containsKey(playerName)) {
+                        player.sendMessage("This email is already in use for this account. Please try another email.");
+                    } else {
+                        playerData.put(playerName, email);
                         saveData();
                         player.sendMessage("Successfully adding Email.");
                         Plugin.LOGGER.info("Email " + email + " successfully added");
                         return true;
-                    } else {
-                        player.sendMessage("This email is already in use for this account. Please try another email.");
                     }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -61,7 +62,7 @@ public class Email implements CommandExecutor {
 
         FileWriter writer = new FileWriter(dataFile);
         for (String playerName : playerData.keySet()) {
-            writer.write(playerName + ":" + playerData.get(playerName));
+            writer.write(playerName + ":" + playerData.get(playerName) + "\n");
         }
         writer.close();
     }

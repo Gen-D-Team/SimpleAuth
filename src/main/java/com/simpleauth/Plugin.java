@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.simpleauth.CommandHandler.Email;
 import com.simpleauth.CommandHandler.Help;
 import com.simpleauth.CommandHandler.LogIn;
 
@@ -15,28 +16,31 @@ public class Plugin extends JavaPlugin {
   public static Logger LOGGER = Logger.getLogger("simpleauthme");
   private LogIn logIn;
   private Help help;
+  private Email email;
 
   public void onEnable() {
 
-    LOGGER.info("simpleauthme enabled");
+    LOGGER.info("simpleauthme-0.2-SNAPSHOT enabled");
     logIn = new LogIn();
     help = new Help();
+    email = new Email();
     try {
       logIn.loadDataFromFile();
+      email.loadData();
     } catch (IOException e) {
       e.printStackTrace();
     }
     getCommand("authme").setExecutor(help);
     getCommand("register").setExecutor(logIn);
     getCommand("login").setExecutor(logIn);
-    getCommand("addemail").setExecutor(logIn);
+    getCommand("addemail").setExecutor(email);
 
     getServer().getPluginManager().registerEvents(logIn, this);
-    getLogger().info("SimpleAuth-0.2-SNAPSHOT Enabled");
+    getLogger().info("simpleauthme-0.2-SNAPSHOT Enabled");
   }
 
   public void onDisable() {
-    LOGGER.info("simpleauthme disabled");
+    LOGGER.info("simpleauthme-0.2-SNAPSHOT disabled");
   }
 
   public static JavaPlugin getInstance() {
