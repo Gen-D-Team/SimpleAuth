@@ -1,4 +1,4 @@
-name: simpleauthme
+name: SimpleAuthMe
 main: com.simpleauth.Plugin
 version: 0.2
 api-version: 1.16

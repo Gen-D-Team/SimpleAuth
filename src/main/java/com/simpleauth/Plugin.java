@@ -13,14 +13,14 @@ import com.simpleauth.CommandHandler.LogIn;
  */
 
 public class Plugin extends JavaPlugin {
-  public static Logger LOGGER = Logger.getLogger("simpleauthme");
+  public static Logger LOGGER = Logger.getLogger("SimpleAuthMe");
   private LogIn logIn;
   private Help help;
   private Email email;
 
   public void onEnable() {
 
-    LOGGER.info("simpleauthme-0.2-SNAPSHOT enabled");
+    LOGGER.info("SimpleAuthMe-0.2-SNAPSHOT enabled");
     logIn = new LogIn();
     help = new Help();
     email = new Email();
@@ -35,12 +35,13 @@ public class Plugin extends JavaPlugin {
     getCommand("login").setExecutor(logIn);
     getCommand("addemail").setExecutor(email);
 
+    saveDefaultConfig();
+
     getServer().getPluginManager().registerEvents(logIn, this);
-    getLogger().info("simpleauthme-0.2-SNAPSHOT Enabled");
   }
 
   public void onDisable() {
-    LOGGER.info("simpleauthme-0.2-SNAPSHOT disabled");
+    LOGGER.info("SimpleAuthMe-0.2-SNAPSHOT disabled");
   }
 
   public static JavaPlugin getInstance() {

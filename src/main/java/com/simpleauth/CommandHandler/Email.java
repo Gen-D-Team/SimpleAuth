@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 
 import com.simpleauth.Plugin;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class Email implements CommandExecutor {
     private HashMap<String, String> playerData = new HashMap<>();
     private final String dataFileName = "email.txt";
@@ -31,21 +33,19 @@ public class Email implements CommandExecutor {
             if (matcherFound) {
                 try {
                     if (playerData.containsKey(playerName)) {
-                        player.sendMessage("This email is already in use for this account. Please try another email.");
+                        player.sendMessage(ChatColor.RED + "This email is already in use for this account. Please try another email.");
                     } else {
                         playerData.put(playerName, email);
                         saveData();
-                        player.sendMessage("Successfully adding Email.");
-                        Plugin.LOGGER.info("Email " + email + " successfully added");
+                        player.sendMessage(ChatColor.GREEN + "Successfully adding Email.");
+                        Plugin.LOGGER.info(ChatColor.GREEN + "Email " + email + " successfully added");
                         return true;
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             } else {
-                player.sendMessage("Invalid email. Please try again.");
+                player.sendMessage(ChatColor.RED + "Invalid email. Please try again.");
                 return false;
             }
         }
