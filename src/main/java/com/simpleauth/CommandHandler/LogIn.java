@@ -1,6 +1,7 @@
 package com.simpleauth.CommandHandler;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -58,14 +59,22 @@ public class LogIn implements CommandExecutor, Listener {
         Player player = (Player) sender;
         String playerName = player.getName();
 
-        // Register Command
-        
+        if (!player.hasPermission("authme.use")) {
+            player.sendMessage("You don't have permission to use this commands");
+            return false;
+        }
+
         if (command.getName().equalsIgnoreCase("register")) {
             String password = args[0];
 
             if (playerData.containsKey(playerName)) {
                 player.sendMessage("§aYour account has been registered!");
                 return true;
+            }
+
+            if (password.length() < 8) {
+                player.sendMessage(ChatColor.RED + "Your password is too short. Please try again!");
+                return false;
             }
 
             playerData.put(playerName, password);
@@ -78,7 +87,7 @@ public class LogIn implements CommandExecutor, Listener {
                 e.printStackTrace();
             }
 
-        // Login Commands
+            // Login Commands
         } else if (command.getName().equalsIgnoreCase("login")) {
             String password = args[0];
 
@@ -96,6 +105,17 @@ public class LogIn implements CommandExecutor, Listener {
             LoginTimestamps.remove(playerName);
             player.sendMessage("§aLogin Successfully");
         }
+
+        if (command.getName().equalsIgnoreCase("authme")) {
+            if (args[0].equalsIgnoreCase("help")) {
+                player.sendMessage(ChatColor.GOLD + "/authme help to show all commands");
+                player.sendMessage(ChatColor.GOLD + "/register <password> to register your account");
+                player.sendMessage(ChatColor.GOLD + "/login <password> to login into server");
+                player.sendMessage(ChatColor.GOLD + "/addemail <email> to add email");
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -118,7 +138,7 @@ public class LogIn implements CommandExecutor, Listener {
     }
 
     public void saveDataToFile() throws IOException {
-        File dataFolder = new File("plugins/SimpleAuthConfig/");
+        File dataFolder = new File("plugins/simpleauthme/");
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
         }
@@ -133,7 +153,7 @@ public class LogIn implements CommandExecutor, Listener {
     }
 
     public void loadDataFromFile() throws IOException {
-        File dataFolder = new File("plugins/SimpleAuthConfig/");
+        File dataFolder = new File("plugins/simpleauthme/");
         File dataFile = new File(dataFolder, dataFileName);
         if (!dataFile.exists() || !dataFile.isFile()) {
             dataFile.createNewFile();

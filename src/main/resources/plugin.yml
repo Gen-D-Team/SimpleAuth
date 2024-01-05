@@ -1,4 +1,4 @@
-name: SimpleAuthMe
+name: simpleauthme
 main: com.simpleauth.Plugin
 version: 0.2
 api-version: 1.16
@@ -14,12 +14,6 @@ commands:
   addemail:
     description: Add an email address
 permissions:
-  authme.use.register:
+  authme.use:
     description: Allow to use register command
-    default: op
-  authme.use.login:
-    description: Allow to use login command
-    default: op
-  autheme.use.email:
-    description: Allow to use email
     default: op

@@ -53,7 +53,7 @@ public class Email implements CommandExecutor {
     }
 
     public void saveData() throws IOException {
-        File dataFolder = new File("plugins/SimpleAuthConfig/");
+        File dataFolder = new File("plugins/simpleauthme/");
         if (!dataFolder.exists()) {
             dataFolder.mkdir();
         }
@@ -68,7 +68,7 @@ public class Email implements CommandExecutor {
     }
 
     public void loadData() throws IOException {
-        File dataFolder = new File("plugins/SimpleAuthConfig/");
+        File dataFolder = new File("plugins/simpleauthme/");
         File dataFile = new File(dataFolder, dataFileName);
         if (!dataFile.exists() || !dataFile.isFile()) {
             dataFile.createNewFile();
