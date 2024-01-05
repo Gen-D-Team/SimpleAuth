@@ -8,10 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.simpleauth.CommandHandler.Email;
 import com.simpleauth.CommandHandler.LogIn;
 
-/*
- * simpleauthme java plugin
- */
-
 public class Plugin extends JavaPlugin {
     public static Logger LOGGER = Logger.getLogger("simpleauthme");
     private LogIn logIn;

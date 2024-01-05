@@ -1,0 +1,19 @@
+name: simpleauthme
+main: com.simpleauth.Plugin
+version: 0.2
+api-version: 1.16
+author: ["KiroHoang"]
+description: Init Account in server
+commands:
+  authme:
+    description: show available commands
+  register:
+    description: register account
+  login:
+    description: login account
+  addemail:
+    description: Add an email address
+permissions:
+  authme.use:
+    description: Allow to use register command
+    default: op

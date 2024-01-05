@@ -72,8 +72,8 @@ public class LogIn implements CommandExecutor, Listener {
                 return true;
             }
 
-            if (password.length() < 8) {
-                player.sendMessage(ChatColor.RED + "Your password is too short. Please try again!");
+            if (password.length() < 6) {
+                player.sendMessage(ChatColor.RED + "Your password is too short. Please try again at least 6 characters!");
                 return false;
             }
 
@@ -126,7 +126,7 @@ public class LogIn implements CommandExecutor, Listener {
         if (!loggedInPlayers.contains(playerName)) {
             event.setCancelled(true);
             LoginTimestamps.put(playerName, System.currentTimeMillis());
-            player.sendMessage("§cYou must login before move");
+            player.sendMessage("§cYou must login");
         }
     }
 
